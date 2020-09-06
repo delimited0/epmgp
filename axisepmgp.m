@@ -137,6 +137,13 @@ function [logZEP, mu, Sigma] = axisepmgp(m,K,lowerB,upperB)
     Sigma = K - V'*V;
     mu = Sigma*(nuSite + KinvM);
     
+    fprintf("tau site");
+    disp(tauSite);
+    fprintf("tau cavity");
+    disp(tauCavity);
+    fprintf("L");
+    disp(L);
+    
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     % check convergence criteria
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -159,7 +166,10 @@ function [logZEP, mu, Sigma] = axisepmgp(m,K,lowerB,upperB)
     lZ1 = 0.5*sum(log( 1 + tauSite./tauCavity)) - sum(log(diag(L)));
     lZ2 = 0.5*(nuSite - tauSite.*m)'*(Sigma - diag(1./(tauCavity + tauSite)))*(nuSite - tauSite.*m); 
     lZ3 = 0.5*nuCavity'*((diag(tauSite) + diag(tauCavity))\(tauSite.*nuCavity./tauCavity - 2*nuSite));
-    lZ4 = - 0.5*(tauCavity.*m)'*((diag(tauSite) + diag(tauCavity))\(tauSite.*m - 2*nuSite));  
+    lZ4 = - 0.5*(tauCavity.*m)'*((diag(tauSite) + diag(tauCavity))\(tauSite.*m - 2*nuSite)); 
+    
+    fprintf("lz1: %d\nlz2: %d\nlz3: %d\nlz4: %d\n", lZ1, lZ2, lZ3, lZ4);
+    
     logZEP = lZ1 + lZ2 + lZ3 + lZ4 + sum(logZhat);
   end
   
